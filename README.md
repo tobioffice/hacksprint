@@ -229,14 +229,42 @@ The seed script provides 12 sample books across various genres:
 
 ## 🚀 Deployment
 
-### Backend Deployment
+### Vercel Deployment (Recommended)
+This project is configured for easy deployment on Vercel with a single command:
+
+1. **Install Vercel CLI:**
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Deploy:**
+   ```bash
+   vercel --prod
+   ```
+
+3. **Set Environment Variables in Vercel:**
+   ```env
+   MONGO_DB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_secure_jwt_secret
+   NODE_ENV=production
+   ```
+
+4. **Seed Database (Optional):**
+   After deployment, you can seed the database by calling:
+   ```
+   POST https://your-app-url.vercel.app/api/seed
+   ```
+
+### Manual Deployment
+
+#### Backend Deployment
 ```bash
 cd backend
 pnpm build
 pnpm start
 ```
 
-### Frontend Deployment
+#### Frontend Deployment
 ```bash
 cd frontend
 pnpm build

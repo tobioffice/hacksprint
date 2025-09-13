@@ -70,7 +70,7 @@ const Books = () => {
       if (genre) params.append("genre", genre);
 
       const response = await axios.get(
-        `http://144.24.159.113/api/books?${params}`,
+        `https://librarypro.tobioffice.dev/api/books?${params}`,
       );
       setBooks(response.data);
     } catch (error) {
@@ -86,7 +86,7 @@ const Books = () => {
 
     try {
       await axios.post(
-        "http://144.24.159.113/api/borrowings/borrow",
+        "https://librarypro.tobioffice.dev/api/borrowings/borrow",
         { bookId },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -107,16 +107,20 @@ const Books = () => {
     try {
       if (editingBook) {
         await axios.put(
-          `http://144.24.159.113/api/books/${editingBook._id}`,
+          `https://librarypro.tobioffice.dev/api/books/${editingBook._id}`,
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
       } else {
-        await axios.post("http://144.24.159.113/api/books", formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.post(
+          "https://librarypro.tobioffice.dev/api/books",
+          formData,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
       }
       setShowAddModal(false);
       setShowEditModal(false);
@@ -158,9 +162,12 @@ const Books = () => {
     if (!token) return;
 
     try {
-      await axios.delete(`http://144.24.159.113/api/books/${bookId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://librarypro.tobioffice.dev/api/books/${bookId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       fetchBooks();
       alert("Book deleted successfully!");
     } catch (error: any) {

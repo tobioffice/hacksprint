@@ -46,7 +46,7 @@ const Dashboard = () => {
     } else {
       // Fetch user data
       axios
-        .get("http://144.24.159.113/api/auth/me", {
+        .get("https://librarypro.tobioffice.dev/api/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -67,7 +67,7 @@ const Dashboard = () => {
   const fetchRecommendations = async () => {
     try {
       const response = await axios.get(
-        "http://144.24.159.113/api/books/recommendations",
+        "https://librarypro.tobioffice.dev/api/books/recommendations",
       );
       setRecommendations(response.data.slice(0, 6)); // Show only 6 recommendations
     } catch (error) {

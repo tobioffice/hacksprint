@@ -28,9 +28,12 @@ const Admin = () => {
     if (!token) return;
 
     try {
-      const response = await axios.get("http://144.24.159.113/api/users", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://librarypro.tobioffice.dev/api/users",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -47,16 +50,20 @@ const Admin = () => {
     try {
       if (editingUser) {
         await axios.put(
-          `http://144.24.159.113/api/users/${editingUser._id}`,
+          `https://librarypro.tobioffice.dev/api/users/${editingUser._id}`,
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
       } else {
-        await axios.post("http://144.24.159.113/api/users", formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.post(
+          "https://librarypro.tobioffice.dev/api/users",
+          formData,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
       }
       setFormData({ name: "", email: "", password: "", role: "student" });
       setEditingUser(null);
@@ -83,9 +90,12 @@ const Admin = () => {
     if (!token) return;
 
     try {
-      await axios.delete(`http://144.24.159.113/api/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://librarypro.tobioffice.dev/api/users/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       fetchUsers();
     } catch (error: any) {
       alert(error.response?.data?.message || "Error deleting user");

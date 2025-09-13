@@ -25,7 +25,7 @@ const Login = () => {
     try {
       const endpoint = isRegister ? "/api/auth/register" : "/api/auth/login";
       const response = await axios.post(
-        `http://144.24.159.113${endpoint}`,
+        `https://librarypro.tobioffice.dev${endpoint}`,
         formData,
       );
       localStorage.setItem("token", response.data.token);

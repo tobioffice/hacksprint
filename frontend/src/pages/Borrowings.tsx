@@ -42,7 +42,7 @@ const Borrowings = () => {
 
       // Fetch user's borrowings
       const myResponse = await axios.get(
-        "http://144.24.159.113/api/borrowings/my",
+        "https://librarypro.tobioffice.dev/api/borrowings/my",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -52,7 +52,7 @@ const Borrowings = () => {
       // If librarian or admin, fetch all borrowings
       if (userData.role === "librarian" || userData.role === "admin") {
         const allResponse = await axios.get(
-          "http://144.24.159.113/api/borrowings",
+          "https://librarypro.tobioffice.dev/api/borrowings",
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -72,7 +72,7 @@ const Borrowings = () => {
 
     try {
       await axios.post(
-        `http://144.24.159.113/api/borrowings/return/${borrowingId}`,
+        `https://librarypro.tobioffice.dev/api/borrowings/return/${borrowingId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

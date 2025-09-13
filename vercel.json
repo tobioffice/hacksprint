@@ -20,8 +20,8 @@
       "dest": "/backend/dist/server.js"
     }
   ],
-  "buildCommand": "cd frontend && npm run build && cd ../backend && npm run build",
-  "installCommand": "npm install",
+  "buildCommand": "npm install -g pnpm && cd frontend && pnpm install && pnpm run build && cd ../backend && pnpm install && pnpm run build",
+  "installCommand": "npm install -g pnpm && pnpm install",
   "env": {
     "NODE_ENV": "production"
   }

@@ -230,17 +230,21 @@ The seed script provides 12 sample books across various genres:
 ## 🚀 Deployment
 
 ### Vercel Deployment (Recommended)
-This project is configured for easy deployment on Vercel with a single command:
+This project is configured for easy deployment on Vercel with automatic pnpm support:
 
 1. **Install Vercel CLI:**
    ```bash
    npm install -g vercel
+   # OR
+   pnpm add -g vercel
    ```
 
 2. **Deploy:**
    ```bash
    vercel --prod
    ```
+
+   *Note: Vercel will automatically install pnpm if needed during deployment.*
 
 3. **Set Environment Variables in Vercel:**
    ```env

@@ -105,19 +105,26 @@ pnpm run seed
 
 ### 5. Start the Application
 
-#### Terminal 1: Backend
+#### Single Command (Recommended)
 ```bash
+# Build frontend and start backend (serves both API and frontend)
 cd backend
+pnpm build
 pnpm start
 ```
-Server runs on: `http://localhost:5000`
+**App runs on:** `http://localhost:5000`
 
-#### Terminal 2: Frontend
+#### Alternative: Development Mode
+If you need hot-reloading during development:
 ```bash
+# Terminal 1: Backend API only
+cd backend
+pnpm dev
+
+# Terminal 2: Frontend dev server
 cd frontend
 pnpm dev
 ```
-App runs on: `http://localhost:5173`
 
 ## 📖 Usage
 

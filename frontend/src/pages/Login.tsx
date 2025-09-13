@@ -1,34 +1,49 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { BookOpenIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-import axios from 'axios'
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  BookOpenIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "@heroicons/react/24/outline";
+import axios from "axios";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'student' })
-  const [isRegister, setIsRegister] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "student",
+  });
+  const [isRegister, setIsRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
-      const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login'
-      const response = await axios.post(`http://localhost:5000${endpoint}`, formData)
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
-      navigate('/dashboard')
+      const endpoint = isRegister ? "/api/auth/register" : "/api/auth/login";
+      const response = await axios.post(
+        `http://144.24.159.113${endpoint}`,
+        formData,
+      );
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/dashboard");
     } catch (error) {
-      alert('Error: ' + (error as any).response?.data?.message || 'Something went wrong')
+      alert(
+        "Error: " + (error as any).response?.data?.message ||
+          "Something went wrong",
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -48,10 +63,12 @@ const Login = () => {
             </div>
           </Link>
           <h2 className="text-3xl font-bold text-white mb-2">
-            {isRegister ? 'Create Account' : 'Welcome Back'}
+            {isRegister ? "Create Account" : "Welcome Back"}
           </h2>
           <p className="text-purple-100">
-            {isRegister ? 'Join our library community' : 'Sign in to your account'}
+            {isRegister
+              ? "Join our library community"
+              : "Sign in to your account"}
           </p>
         </div>
 
@@ -61,7 +78,10 @@ const Login = () => {
             {/* Name field (only for register) */}
             {isRegister && (
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Full Name
                 </label>
                 <input
@@ -79,7 +99,10 @@ const Login = () => {
 
             {/* Email field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -96,7 +119,10 @@ const Login = () => {
 
             {/* Password field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -127,17 +153,28 @@ const Login = () => {
             {/* Role selection (only for register) */}
             {isRegister && (
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Role
                 </label>
                 <select
                   name="role"
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
                   className="w-full px-4 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent backdrop-blur-sm transition-all duration-200"
                 >
-                  <option value="student" className="text-gray-900">Student</option>
-                  <option value="librarian" className="text-gray-900">Librarian</option>
-                  <option value="admin" className="text-gray-900">Admin</option>
+                  <option value="student" className="text-gray-900">
+                    Student
+                  </option>
+                  <option value="librarian" className="text-gray-900">
+                    Librarian
+                  </option>
+                  <option value="admin" className="text-gray-900">
+                    Admin
+                  </option>
                 </select>
               </div>
             )}
@@ -152,10 +189,12 @@ const Login = () => {
                 {loading ? (
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    {isRegister ? 'Creating Account...' : 'Signing In...'}
+                    {isRegister ? "Creating Account..." : "Signing In..."}
                   </div>
+                ) : isRegister ? (
+                  "Create Account"
                 ) : (
-                  isRegister ? 'Create Account' : 'Sign In'
+                  "Sign In"
                 )}
               </button>
             </div>
@@ -167,10 +206,9 @@ const Login = () => {
                 onClick={() => setIsRegister(!isRegister)}
                 className="text-purple-100 hover:text-white transition-colors duration-200 text-sm"
               >
-                {isRegister 
-                  ? 'Already have an account? Sign In' 
-                  : 'Need an account? Create one'
-                }
+                {isRegister
+                  ? "Already have an account? Sign In"
+                  : "Need an account? Create one"}
               </button>
             </div>
           </form>
@@ -178,8 +216,8 @@ const Login = () => {
 
         {/* Back to home link */}
         <div className="text-center">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="text-purple-100 hover:text-white transition-colors duration-200 text-sm"
           >
             ← Back to Home
@@ -187,7 +225,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

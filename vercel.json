@@ -12,10 +12,17 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/backend/dist/server.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/backend/dist/server.js"
     }
   ],
   "buildCommand": "npm install -g pnpm && cd frontend && pnpm install && pnpm run build && cd ../backend && pnpm install && pnpm run build",
-  "installCommand": "npm install -g pnpm && pnpm install"
+  "installCommand": "npm install -g pnpm && pnpm install",
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

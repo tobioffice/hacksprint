@@ -1,84 +1,87 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { 
-  BookOpenIcon, 
-  UserIcon, 
-  ClockIcon, 
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  BookOpenIcon,
+  UserIcon,
+  ClockIcon,
   SparklesIcon,
   ArrowRightIcon,
-  ArrowTopRightOnSquareIcon 
-} from '@heroicons/react/24/outline'
-import axios from 'axios'
+  ArrowTopRightOnSquareIcon,
+} from "@heroicons/react/24/outline";
+import axios from "axios";
 
 interface User {
-  id: string
-  name: string
-  email: string
-  role: string
+  id: string;
+  name: string;
+  email: string;
+  role: string;
 }
 
 interface Book {
-  _id: string
-  title: string
-  author: string
-  genre: string
-  availableCopies: number
-  totalCopies: number
+  _id: string;
+  title: string;
+  author: string;
+  genre: string;
+  availableCopies: number;
+  totalCopies: number;
 }
 
 const Dashboard = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [recommendations, setRecommendations] = useState<Book[]>([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
+  const [user, setUser] = useState<User | null>(null);
+  const [recommendations, setRecommendations] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const userData = localStorage.getItem('user')
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
 
     if (!token) {
-      navigate('/login')
-      return
+      navigate("/login");
+      return;
     }
 
     if (userData) {
-      setUser(JSON.parse(userData))
+      setUser(JSON.parse(userData));
     } else {
       // Fetch user data
-      axios.get('http://localhost:5000/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(response => {
-        setUser(response.data.user)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-      })
-      .catch(() => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        navigate('/login')
-      })
+      axios
+        .get("http://144.24.159.113/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          setUser(response.data.user);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+        });
     }
 
     // Fetch recommendations
-    fetchRecommendations()
-  }, [navigate])
+    fetchRecommendations();
+  }, [navigate]);
 
   const fetchRecommendations = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books/recommendations')
-      setRecommendations(response.data.slice(0, 6)) // Show only 6 recommendations
+      const response = await axios.get(
+        "http://144.24.159.113/api/books/recommendations",
+      );
+      setRecommendations(response.data.slice(0, 6)); // Show only 6 recommendations
     } catch (error) {
-      console.error('Error fetching recommendations:', error)
+      console.error("Error fetching recommendations:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    navigate('/login')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   if (!user || loading) {
     return (
@@ -88,38 +91,42 @@ const Dashboard = () => {
           <span className="text-gray-600">Loading...</span>
         </div>
       </div>
-    )
+    );
   }
 
   const quickActions = [
     {
-      title: 'Browse Books',
-      description: 'Explore our extensive collection',
+      title: "Browse Books",
+      description: "Explore our extensive collection",
       icon: BookOpenIcon,
-      href: '/books',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-600'
+      href: "/books",
+      color: "from-blue-500 to-blue-600",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-600",
     },
     {
-      title: 'My Borrowings',
-      description: 'View your borrowed books',
+      title: "My Borrowings",
+      description: "View your borrowed books",
       icon: ClockIcon,
-      href: '/borrowings',
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-600'
+      href: "/borrowings",
+      color: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      textColor: "text-green-600",
     },
-    ...(user.role === 'admin' ? [{
-      title: 'Admin Panel',
-      description: 'Manage users and system',
-      icon: UserIcon,
-      href: '/admin',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-600'
-    }] : [])
-  ]
+    ...(user.role === "admin"
+      ? [
+          {
+            title: "Admin Panel",
+            description: "Manage users and system",
+            icon: UserIcon,
+            href: "/admin",
+            color: "from-purple-500 to-purple-600",
+            bgColor: "bg-purple-50",
+            textColor: "text-purple-600",
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
@@ -135,27 +142,27 @@ const Dashboard = () => {
                 </span>
               </div>
               <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
-                <Link 
-                  to="/dashboard" 
+                <Link
+                  to="/dashboard"
                   className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors hover:text-indigo-600"
                 >
                   Dashboard
                 </Link>
-                <Link 
-                  to="/books" 
+                <Link
+                  to="/books"
                   className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                 >
                   Books
                 </Link>
-                <Link 
-                  to="/borrowings" 
+                <Link
+                  to="/borrowings"
                   className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                 >
                   My Borrowings
                 </Link>
-                {user.role === 'admin' && (
-                  <Link 
-                    to="/admin" 
+                {user.role === "admin" && (
+                  <Link
+                    to="/admin"
                     className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                   >
                     Admin
@@ -169,8 +176,12 @@ const Dashboard = () => {
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-700">{user.name}</p>
-                  <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+                  <p className="text-sm font-medium text-gray-700">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-gray-500 capitalize">
+                    {user.role}
+                  </p>
                 </div>
               </div>
               <button
@@ -195,8 +206,8 @@ const Dashboard = () => {
                 Welcome back, {user.name}! 👋
               </h1>
               <p className="text-lg text-purple-100 mb-6 max-w-2xl">
-                Ready to dive into your literary journey? Explore our vast collection, manage your borrowings, 
-                and discover new favorites.
+                Ready to dive into your literary journey? Explore our vast
+                collection, manage your borrowings, and discover new favorites.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -219,7 +230,9 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {quickActions.map((action, index) => (
               <Link
@@ -227,7 +240,9 @@ const Dashboard = () => {
                 to={action.href}
                 className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100"
               >
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${action.color} text-white mb-4 group-hover:scale-110 transition-transform duration-200`}>
+                <div
+                  className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${action.color} text-white mb-4 group-hover:scale-110 transition-transform duration-200`}
+                >
                   <action.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
@@ -248,7 +263,9 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <SparklesIcon className="h-6 w-6 text-yellow-500 mr-2" />
-              <h2 className="text-2xl font-bold text-gray-900">Recommended for You</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Recommended for You
+              </h2>
             </div>
             <Link
               to="/books"
@@ -257,11 +274,13 @@ const Dashboard = () => {
               View all books →
             </Link>
           </div>
-          
+
           {recommendations.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 text-center shadow-lg">
               <SparklesIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">No recommendations available at the moment.</p>
+              <p className="text-gray-500">
+                No recommendations available at the moment.
+              </p>
               <Link
                 to="/books"
                 className="inline-flex items-center mt-4 text-indigo-600 hover:text-indigo-700 font-medium"
@@ -273,8 +292,8 @@ const Dashboard = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendations.map((book) => (
-                <div 
-                  key={book._id} 
+                <div
+                  key={book._id}
                   className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100 group"
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -282,26 +301,40 @@ const Dashboard = () => {
                       <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
                         {book.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-1">by {book.author}</p>
+                      <p className="text-sm text-gray-600 mb-1">
+                        by {book.author}
+                      </p>
                       <span className="inline-block bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 text-xs px-2 py-1 rounded-full">
                         {book.genre}
                       </span>
                     </div>
                     <div className="text-right">
-                      <div className={`text-xs font-medium ${book.availableCopies > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {book.availableCopies > 0 ? 'Available' : 'Not Available'}
+                      <div
+                        className={`text-xs font-medium ${
+                          book.availableCopies > 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {book.availableCopies > 0
+                          ? "Available"
+                          : "Not Available"}
                       </div>
                       <div className="text-xs text-gray-500 mt-1">
                         {book.availableCopies}/{book.totalCopies} copies
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mt-4">
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${(book.availableCopies / book.totalCopies) * 100}%` }}
+                        style={{
+                          width: `${
+                            (book.availableCopies / book.totalCopies) * 100
+                          }%`,
+                        }}
                       ></div>
                     </div>
                     <Link
@@ -318,7 +351,7 @@ const Dashboard = () => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

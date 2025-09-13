@@ -1,102 +1,127 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface User {
-  _id: string
-  name: string
-  email: string
-  role: string
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
 }
 
 const Admin = () => {
-  const [users, setUsers] = useState<User[]>([])
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'student' })
-  const [editingUser, setEditingUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState<User[]>([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "student",
+  });
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
 
   const fetchUsers = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) return
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
     try {
-      const response = await axios.get('http://localhost:5000/api/users', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      setUsers(response.data)
+      const response = await axios.get("http://144.24.159.113/api/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error)
+      console.error("Error fetching users:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const token = localStorage.getItem('token')
-    if (!token) return
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
     try {
       if (editingUser) {
-        await axios.put(`http://localhost:5000/api/users/${editingUser._id}`, formData, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await axios.put(
+          `http://144.24.159.113/api/users/${editingUser._id}`,
+          formData,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
       } else {
-        await axios.post('http://localhost:5000/api/users', formData, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await axios.post("http://144.24.159.113/api/users", formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }
-      setFormData({ name: '', email: '', password: '', role: 'student' })
-      setEditingUser(null)
-      fetchUsers()
+      setFormData({ name: "", email: "", password: "", role: "student" });
+      setEditingUser(null);
+      fetchUsers();
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Error saving user')
+      alert(error.response?.data?.message || "Error saving user");
     }
-  }
+  };
 
   const handleEdit = (user: User) => {
-    setFormData({ name: user.name, email: user.email, password: '', role: user.role })
-    setEditingUser(user)
-  }
+    setFormData({
+      name: user.name,
+      email: user.email,
+      password: "",
+      role: user.role,
+    });
+    setEditingUser(user);
+  };
 
   const handleDelete = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return
+    if (!confirm("Are you sure you want to delete this user?")) return;
 
-    const token = localStorage.getItem('token')
-    if (!token) return
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      fetchUsers()
+      await axios.delete(`http://144.24.159.113/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchUsers();
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Error deleting user')
+      alert(error.response?.data?.message || "Error deleting user");
     }
-  }
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  if (loading) return <div className="min-h-screen bg-gray-100 flex items-center justify-center">Loading...</div>
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Panel - User Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">
+          Admin Panel - User Management
+        </h1>
 
         {/* Add/Edit User Form */}
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">
-            {editingUser ? 'Edit User' : 'Add New User'}
+            {editingUser ? "Edit User" : "Add New User"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -107,7 +132,9 @@ const Admin = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -119,7 +146,9 @@ const Admin = () => {
             </div>
             {!editingUser && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
                 <input
                   type="password"
                   name="password"
@@ -131,7 +160,9 @@ const Admin = () => {
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Role</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
               <select
                 name="role"
                 value={formData.role}
@@ -148,14 +179,19 @@ const Admin = () => {
                 type="submit"
                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md"
               >
-                {editingUser ? 'Update User' : 'Add User'}
+                {editingUser ? "Update User" : "Add User"}
               </button>
               {editingUser && (
                 <button
                   type="button"
                   onClick={() => {
-                    setEditingUser(null)
-                    setFormData({ name: '', email: '', password: '', role: 'student' })
+                    setEditingUser(null);
+                    setFormData({
+                      name: "",
+                      email: "",
+                      password: "",
+                      role: "student",
+                    });
                   }}
                   className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
                 >
@@ -173,9 +209,14 @@ const Admin = () => {
           </div>
           <ul className="divide-y divide-gray-200">
             {users.map((user) => (
-              <li key={user._id} className="px-6 py-4 flex items-center justify-between">
+              <li
+                key={user._id}
+                className="px-6 py-4 flex items-center justify-between"
+              >
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.name}
+                  </p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                   <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                     {user.role}
@@ -201,7 +242,7 @@ const Admin = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;

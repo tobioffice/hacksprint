@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import path from 'path';
 import authRoutes from './routes/auth';
 import bookRoutes from './routes/books';
 import borrowingRoutes from './routes/borrowings';
@@ -17,10 +18,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API Routes (must be before static files)
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/borrowings', borrowingRoutes);
+app.use('/api/users', userRoutes);
+
 // Seed route for dummy data
 app.post('/api/seed', async (req, res) => {
   try {
@@ -45,11 +48,14 @@ app.post('/api/seed', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-app.use('/api/users', userRoutes);
 
-// Basic route
-app.get('/', (req, res) => {
-  res.json({ message: 'Library Management System API' });
+// Serve static files from React build
+const frontendPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendPath));
+
+// Catch-all handler: send back React's index.html file for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // Connect to MongoDB
@@ -59,4 +65,5 @@ mongoose.connect(process.env.MONGO_DB_URI!)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Frontend served from: ${frontendPath}`);
 });

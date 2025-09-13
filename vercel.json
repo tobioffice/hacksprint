@@ -1,27 +1,25 @@
 {
   "version": 2,
   "name": "library-management-system",
-  "builds": [
-    {
-      "src": "backend/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["backend/**", "frontend/dist/**"]
-      }
+  "buildCommand": "npm install -g pnpm && cd frontend && pnpm install && pnpm run build && cd ../backend && pnpm install && pnpm run build",
+  "outputDirectory": "backend/dist",
+  "installCommand": "npm install -g pnpm && pnpm install",
+  "framework": null,
+  "functions": {
+    "backend/dist/server.js": {
+      "runtime": "nodejs18.x"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/backend/dist/server.js"
+      "source": "/api/(.*)",
+      "destination": "/backend/dist/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/backend/dist/server.js"
+      "source": "/(.*)",
+      "destination": "/backend/dist/server.js"
     }
   ],
-  "buildCommand": "npm install -g pnpm && cd frontend && pnpm install && pnpm run build && cd ../backend && pnpm install && pnpm run build",
-  "installCommand": "npm install -g pnpm && pnpm install",
   "env": {
     "NODE_ENV": "production"
   }

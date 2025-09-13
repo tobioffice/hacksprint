@@ -1,16 +1,33 @@
 {
-  "name": "hacksprint",
+  "name": "library-management-system",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A modern full-stack library management system built with React, Express.js, and MongoDB",
+  "main": "backend/dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cd backend && pnpm run dev",
+    "build": "cd frontend && pnpm run build && cd ../backend && pnpm run build",
+    "start": "cd backend && pnpm start",
+    "seed": "cd backend && pnpm run seed",
+    "deploy": "vercel --prod",
+    "test": "echo \"Run tests from individual packages\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "library",
+    "management",
+    "react",
+    "express",
+    "mongodb",
+    "typescript"
+  ],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.16.0",
-  "dependencies": {
-    "typescript": "^5.9.2"
-  }
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
 }

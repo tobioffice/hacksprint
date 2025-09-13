@@ -57,6 +57,19 @@ Before running this application, make sure you have:
 - **MongoDB** (local or cloud instance)
 - **pnpm** (recommended) or npm
 
+## 🚀 Quick Start
+
+### One-Command Setup & Run
+```bash
+git clone <repository-url>
+cd library-management-system
+pnpm install
+pnpm run build  # Build both frontend and backend
+pnpm run seed   # Add sample books (optional)
+pnpm start      # Start the server
+```
+Visit: `http://localhost:5000`
+
 ## 🚀 Installation & Setup
 
 ### 1. Clone the Repository
@@ -241,10 +254,12 @@ This project is configured for easy deployment on Vercel with automatic pnpm sup
 
 2. **Deploy:**
    ```bash
+   pnpm run deploy
+   # OR
    vercel --prod
    ```
 
-   *Note: Vercel will automatically install pnpm if needed during deployment.*
+   *Note: Vercel automatically handles pnpm installation and the full build process.*
 
 3. **Set Environment Variables in Vercel:**
    ```env
